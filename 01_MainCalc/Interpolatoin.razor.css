@@ -1,0 +1,36 @@
+﻿:root {
+    --mainColor: #eeeeee;
+    /*--mainColor: #465c59;*/
+    --mainTableSize: 1px; /*толщина линий таблиц*/
+    --inputSize: 500px; /*ширина полей ввода*/
+    /* --widthCells: 500px;
+    --widthCells1: 50px;*/
+}
+
+table {
+    border-collapse: collapse;
+    /*убираем пустые промежутки между ячейками*/
+    border: var(--mainTableSize) solid #f7f7f7;
+    /*устанавливаем для таблицы внешнюю границу серого цвета толщиной 1px*/
+}
+
+td {
+    border: var(--mainTableSize) solid #f7f7f7;
+    /*  width: var(--widthCells);*/
+}
+/*ширина 1 и 3 столбца*/
+.ferstcol {
+    width: 40px;
+    /*color: #0071c1;*/
+}
+/*ширина 2 и 4 столбца*/
+.secondcol {
+    width: 150px;
+}
+
+.btn-main1 {
+    color: #fff;
+    background-color: #063d37;
+    border-color: #063d37;
+    width: 150px;
+}

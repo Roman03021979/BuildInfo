@@ -1,0 +1,35 @@
+﻿
+@page "/datanav"
+@using BuildInfo
+@using System.IO
+@inject IJSRuntime JS
+
+
+
+<h3>Файлы для скачивания</h3>
+
+<button @onclick="DownloadFileFromStream">
+    Download File From Stream
+</button>
+
+
+
+
+
+
+@code {
+    private Stream GetFileStream()
+    {
+        return File.OpenRead(@"wwwroot/data/");
+    }
+
+    private async Task DownloadFileFromStream()
+    {
+        var fileStream = GetFileStream();
+        var fileName = "out.ifc";
+
+        using var streamRef = new DotNetStreamReference(stream: fileStream);
+
+        await JS.InvokeVoidAsync("downloadFileFromStream", fileName, streamRef);
+    }
+}

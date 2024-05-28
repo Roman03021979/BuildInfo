@@ -1,0 +1,94 @@
+﻿
+
+#tableaddmaterial {
+    display: grid;
+    grid-template-columns: 100px 800px 75px 120px 120px;
+    grid-template-rows: 35px;
+    grid-column-gap: 5px;
+    grid-row-gap: 2px;
+    box-sizing: border-box;
+    padding: 2px;
+    border: 1px solid;
+    border-radius: 0.4em;
+}
+
+#tablekitmaterial {
+    display: grid;
+    grid-template-columns: 70px 700px 75px 75px 75px;
+    grid-template-rows: 35px;
+    grid-column-gap: 5px;
+    grid-row-gap: 2px;
+    box-sizing: border-box;
+    padding: 2px;
+}
+
+#input02 {
+    border: 1px solid;
+    border-radius: 0.4em;
+    height: 35px;
+    font-size: 15px;
+}
+
+#input01 {
+    width: 700px;
+    border: 1px solid;
+    border-radius: 0.4em;
+    height: 35px;
+    font-size: 15px;
+}
+
+.cl_select00 {
+    padding: 0.5em 1.5em;
+    height: 35px;
+    background-color:#4b7d96;
+    color: #103e58;
+    border-radius: 0.4em;
+    border: 1px solid;
+    border-color: black;
+    font-size: 0.9em;
+    color: black;
+}
+
+.profinfo {
+    display: grid;
+    grid-template-columns: 375px 675px;
+    grid-template-rows: 40px 40px 40px 40px 40px 40px;
+    grid-column-gap: 5px;
+    grid-row-gap: 5px;
+    border: 1px solid;
+    border-color: black;
+    border-radius: 5px;
+    box-sizing: border-box;
+    padding: 10px;
+}
+
+.profinfo2 {
+    border: 1px solid;
+    border-color: black;
+    border-radius: 5px;
+    display: flex;
+    justify-content: left; /* Горизонтальное выравнивание */
+    align-items: center; /* Вертикальное выравнивание */
+    padding: 5px;
+}
+
+.profinfo3 {
+    display: flex;
+    justify-content: left; /* Горизонтальное выравнивание */
+    align-items: center; /* Вертикальное выравнивание */
+    padding: 5px;
+}
+
+.rezulttable {
+    display: grid;
+    grid-template-columns: 375px 500px;
+    grid-template-rows: 40px 40px 40px 40px 40px 40px 40px 40px 40px;
+    grid-column-gap: 5px;
+    grid-row-gap: 5px;
+    border: 1px solid;
+    border-color: black;
+    border-radius: 5px;
+    box-sizing: border-box;
+    padding: 5px;
+}
+

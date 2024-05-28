@@ -1,0 +1,356 @@
+﻿@page "/teploteh"
+@using buildlib;
+@using BuildInfo.Properties;
+<PageTitle>Теплотехнический расчет</PageTitle>
+<h3>Теплотехнический расчет ограждающих конструкций</h3>
+
+<h4>Исходные данные</h4>
+<p>Расчет выполняется на основании нормативной документации:</p>
+<p> - СП 50.13330.2012 "Тепловая защита зданий"</p>
+<p> - СП 131.13330.2020 "Строительная климатология"</p>
+
+<div class="profinfo">
+    <div class="profinfo2"><label>Температура внутреннего воздуха, &#176С</label></div>
+        <div class="profinfo2"><input @bind="Tinside" /></div>
+        <div class="profinfo2"><label>Влажность внутреннего воздуха, %</label> </div>
+        <div class="profinfo2"><input @bind="Winside" /></div>
+        <div class="profinfo2"><label>Назначение здания или помещения</label></div>
+        <div class="profinfo2">
+            <select class="cl_select00" @bind="selectedTypeBuilding">
+                <option>Жилые </option>
+                <option>Лечебно-профилактические и детские учреждения</option>
+                <option>Школы, интернаты, гостиницы и общежития</option>
+                <option>Общественные,кроме указанных выше</option>
+                <option>Административные и бытовые</option>
+                <option>производственные и другие здания и помещения с влажным или мокрым режимом</option>
+                <option>Производственные с сухим и нормальным режимами *</option>
+            </select>
+        </div>
+        <div class="profinfo2"><label>Район строительства</label></div>
+        <div class="profinfo2">
+            <select class="cl_select00" @onchange="loadRegionslist">
+                @foreach (var template1 in regionList)
+                {
+                    <option value=@template1>@template1</option>
+                }
+            </select>
+        </div>
+        <div class="profinfo2"><label>Зона влажности</label></div>
+        <div class="profinfo2">
+            <select class="cl_select00" @bind="WaterZone">
+                <option>сухая</option>
+                <option>нормальная</option>
+                <option>влажная</option>
+            </select>
+        </div>
+        <div class="profinfo2"><label>Влажностный режим помещения</label></div>
+        <div class="profinfo2"><label> </label></div>
+</div>
+<p></p>
+<button class="mainbottom" @onclick="MainCalc">Вычислить</button>
+<p></p>
+
+
+<p>Состав ограждающей конструкции:</p>
+<div class="profinfo">
+    <label>Материалы:</label>
+    <div class="profinfo3">
+        <select class="cl_select00" @bind="newNameMaterial">
+            @foreach (var template1 in listNmaterial)
+            {
+                <option value=@template1>@template1</option>
+            }
+        </select>
+        <input @bind="newGammaA" />
+
+    </div>
+    <label>Слои конструкции:</label>
+    
+   <ul>
+        @foreach (var newM in KitMaterial)
+        {
+            <li>
+                <input type="checkbox" @bind="newM.IsDone" />
+                <input @bind="newM.Name" />
+                <input @bind="newM.gammaA" />
+                <input @bind="newM.gammaB" />
+            </li>
+        }
+        <button class="mainbottom" @onclick="addMaterial">Добавить</button>
+        <button class="mainbottom" @onclick="deleteMaterial">Удалить</button>
+   </ul>
+   
+</div>
+
+<h4>Результаты расчета</h4>
+
+<div class="rezulttable">
+    <div class="profinfo2"><label>Влажностный режим помещения (табл. 1 СП)</label></div>
+    <div class="profinfo2"><label>@WaterMode</label></div>
+    <div class="profinfo2"><label>Условия эксплуатации ограждающих конструкций (табл. 2 СП)</label> </div>
+    <div class="profinfo2"><label>@ExpZone</label></div>
+    <div class="profinfo2"><label>Зона влажности (прил. В СП)</label> </div>
+    <div class="profinfo2"><label>@WaterZone</label></div>
+    <div class="profinfo2"><label>Назначение здания или помещения</label> </div>
+    <div class="profinfo2"><label>@selectedTypeBuilding</label></div>
+    <div class="profinfo2"><label>Район строительства</label> </div>
+    <div class="profinfo2"><label>@selectedRegion</label></div>
+    <div class="profinfo2"><label>Температура отопительного периода &#176С</label> </div>
+    <div class="profinfo2"><label>@Tot</label></div>
+    <div class="profinfo2"><label>Продолжительность отопительного периода, сут</label> </div>
+    <div class="profinfo2"><label>@Zot</label></div>
+    <div class="profinfo2"><label>ГСОП</label> </div>
+    <div class="profinfo2"><label>@GSOP</label></div>
+</div>
+
+<style>
+    .profinfo {
+        display: grid;
+        grid-template-columns: 375px 675px;
+        grid-template-rows: 40px 40px 40px 40px 40px 40px;
+        grid-column-gap: 5px;
+        grid-row-gap: 5px;
+        border: 1px solid;
+        border-color: black;
+        border-radius: 5px;
+        box-sizing: border-box;
+        padding: 10px;
+    }
+
+    .profinfo {
+        display: grid;
+        grid-template-columns: 375px 675px;
+        grid-template-rows: 40px 40px 40px 40px 40px 40px;
+        grid-column-gap: 5px;
+        grid-row-gap: 5px;
+        border: 1px solid;
+        border-color: black;
+        border-radius: 5px;
+        box-sizing: border-box;
+        padding: 10px;
+    }
+    .profinfo2 {
+        border: 1px solid;
+        border-color: black;
+        border-radius: 5px;
+        display: flex;
+        justify-content: left; /* Горизонтальное выравнивание */
+        align-items: center; /* Вертикальное выравнивание */
+        padding: 5px;
+    }
+
+    .profinfo3 {
+        display: flex;
+        justify-content: left; /* Горизонтальное выравнивание */
+        align-items: center; /* Вертикальное выравнивание */
+        padding: 5px;
+    }
+
+
+
+
+
+    .rezulttable {
+        display: grid;
+        grid-template-columns: 375px 500px;
+        grid-template-rows: 40px 40px 40px 40px 40px 40px 40px 40px 40px;
+        grid-column-gap: 5px;
+        grid-row-gap: 5px;
+        border: 1px solid;
+        border-color: black;
+        border-radius: 5px;
+        box-sizing: border-box;
+        padding: 5px;
+    }
+
+    .cl_select00 {
+      /*   margin-top: 10px; */
+        padding: 0.5em 1.5em;
+        background-color: #001233ff;
+        color: #fff;
+        border-radius: 0.4em;
+        border: 1px solid;
+        border-color: black;
+        font-size: 0.9em;
+    }
+
+
+</style>
+
+@code {
+    #region ПЕРЕМЕННЫЕ
+    private double Tinside = 0;
+    private int Winside=0;
+    private string? WaterMode;
+    private string? WaterZone;                //зона влажности по карте (приложение В)
+    private string? ExpZone;                  // А или Б
+    private string? selectedTypeBuilding;
+    private string? selectedRegion;           //регион строительства
+
+    private double Tot;                      //температура отопительного периода
+    private double Zot;                      //продолжительность отопительного периода
+    private double GSOP;
+    private int indexNumb;
+    BuildProfile buildProfile = new ();
+    List<string> regionList = new();
+    List<string> TotList = new();
+    List<string> ZotList = new();
+    List<string> listNmaterial = new();
+    List<string> listGammaA = new();
+    List<string> listGammaB = new();
+    private string? selectedNmaterial;
+    private string? selectedGammaA;
+    private string? selectedGammaB;
+    List<Material> KitMaterial = new();
+    private string? newNameMaterial;
+    private string? newGammaA;
+    private string? newGammaB;
+    private string newThickness;
+    #endregion
+
+    protected override async Task OnInitializedAsync()
+    {
+        regionList = buildProfile.listFromFile((string)buildProfile.Region, 0);
+        TotList = buildProfile.listFromFile((string)buildProfile.Region, 11);
+        ZotList = buildProfile.listFromFile((string)buildProfile.Region, 10);
+        listNmaterial = buildProfile.listFromFileSpliteLine((string)buildProfile.Nmaterial, 0);
+        listGammaA = buildProfile.listFromFileSpliteLine((string)buildProfile.Nmaterial, 1);
+        listGammaB = buildProfile.listFromFileSpliteLine((string)buildProfile.Nmaterial, 2);
+    }
+
+    private void MainCalc()
+    {
+        CalcWaterMode();
+        calcUslExplAB();
+        calcGSOP();
+    }
+
+    private double calcGSOP() => GSOP = Math.Round((Tinside - Tot) * Zot, 2, MidpointRounding.AwayFromZero);
+
+
+    private void loadRegionslist(ChangeEventArgs e)
+    {
+        selectedRegion = e.Value.ToString();
+        for (int i = 0; i <= regionList.Count - 1; i++)
+        {
+            if (selectedRegion == regionList[i])
+            {
+                indexNumb = i;
+            }
+        }
+        Tot =Convert.ToDouble(TotList[indexNumb]);
+        Zot =Convert.ToDouble(ZotList[indexNumb]);
+    }
+    private void loadNmaterial(ChangeEventArgs e)
+    {
+        selectedNmaterial = e.Value.ToString();
+        for (int i = 0; i <= listNmaterial.Count - 1; i++)
+        {
+            if (selectedNmaterial == listNmaterial[i])
+            {
+                indexNumb = i;
+            }
+        }
+        selectedGammaA = listGammaA[indexNumb];
+        selectedGammaB = listGammaB[indexNumb];
+    }
+
+    private void CalcExpZone(ChangeEventArgs e)
+    {
+
+    }
+
+    private void CalcWaterMode()
+    {
+        if (Tinside < 12)
+        {
+            if (Winside < 60) { WaterMode = "сухой"; }
+            if (Winside >= 60 && Winside <= 75) { WaterMode = "нормальный"; }
+            if (Winside > 75) { WaterMode = "влажный"; }
+        }
+        if (Tinside >= 12 && Tinside <=24)
+        {
+            if (Winside < 50) { WaterMode = "сухой"; }
+            if (Winside >= 50 && Winside <= 60) { WaterMode = "нормальный"; }
+            if (Winside > 60 && Winside <= 75) { WaterMode = "влажный"; }
+            if (Winside > 75) { WaterMode = "мокрый"; }
+        }
+        if (Tinside > 24 )
+        {
+            if (Winside < 40) { WaterMode = "сухой"; }
+            if (Winside >= 40 && Winside <= 50) { WaterMode = "нормальный"; }
+            if (Winside > 50 && Winside <= 60) { WaterMode = "влажный"; }
+            if (Winside > 60) { WaterMode = "мокрый"; }
+        }
+    }
+    private void calcUslExplAB()
+    {
+        if (WaterMode == "сухой")
+        {
+            if (WaterZone == "сухая" || WaterZone == "нормальная") { ExpZone = "А";}
+            if (WaterZone == "влажная") { ExpZone = "Б"; }
+        }
+        if (WaterMode == "нормальный")
+        {
+            if (WaterZone == "сухая") { ExpZone = "А"; }
+            if (WaterZone == "нормальная" || WaterZone == "влажная") { ExpZone = "Б"; }
+        }
+        if (WaterMode == "влажный" || WaterMode == "мокрый")
+        {
+            ExpZone = "Б";
+        }
+    }
+
+    public class Material
+    {
+        public string? Name { get; set; }
+        public string? gammaA { get; set; }
+        public string? gammaB { get; set; }
+        public string? Thickness { get; set; }
+        public bool IsDone { get; set; }
+    }
+    private void addMaterial()
+    {
+        {
+            KitMaterial.Add(new Material
+                {
+                    Name = newNameMaterial,
+                    gammaA = newGammaA,
+                    gammaB = newGammaB,
+                    Thickness = newThickness
+                });
+            newNameMaterial = string.Empty;
+            newThickness = string.Empty;
+            newGammaA = string.Empty;
+            newGammaB = string.Empty;
+        }
+
+        for (int i = 0; i <= listNmaterial.Count - 1; i++)
+        {
+            if (newNameMaterial == listNmaterial[i])
+            {
+                indexNumb = i;
+            }
+        }
+        newGammaA = listGammaA[indexNumb];
+        selectedGammaB = listGammaB[indexNumb];
+       
+
+
+      
+    }
+    private void deleteMaterial()
+    {
+        for (int i = 0; i < KitMaterial.Count; i++)
+        {
+            if (KitMaterial[i].IsDone == true)
+            {
+                KitMaterial.Remove(KitMaterial[i]);
+            }
+
+        }
+
+
+    }
+
+}

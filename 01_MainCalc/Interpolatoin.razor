@@ -1,0 +1,47 @@
+﻿@page "/interpolation"
+<h3>Интерполяция</h3>
+
+<table class="iksweb">
+
+	<tbody>
+		<tr>
+			<td class="ferstcol">X1</td>
+			<td class="secondcol"><input class="textbox" @bind="var_x1" /></td>
+			<td class="ferstcol">Y1</td>
+			<td class="secondcol"><input class="textbox" @bind="var_y1" /></td>
+		</tr>
+		<tr>
+			<td class="ferstcol">X2</td>
+			<td class="secondcol"><input class="textbox" @bind="var_x2" /></td>
+			<td class="ferstcol">Y2</td>
+			<td class="secondcol"><input class="textbox" @bind="var_y2" /></td>
+		</tr>
+		<tr>
+			<td class="ferstcol">X3</td>
+			<td class="secondcol"><input class="textbox" @bind="var_x3" /></td>
+			<td class="ferstcol">Y3</td>
+			<td class="secondcol"><input class="textbox" @bind="var_y3" /></td>
+		</tr>
+		<tr>
+			<td class="ferstcol"></td>
+			<td class="secondcol"></td>
+			<td class="ferstcol"></td>
+			<td class="secondcol"><button class="mainbottom" @onclick="InterCount">Вычислить Y2</button></td>
+		</tr>
+	</tbody>
+</table>
+
+<svg>
+	<line x1="100" y1="100" x2="100" y2="300" stroke-width="1" stroke="black" />
+</svg>
+
+@code {
+	private double var_x1 = 0; private double var_y1 = 0;
+	private double var_x2 = 0; private double var_y2 = 0;
+	private double var_x3 = 0; private double var_y3 = 0;
+
+	private void InterCount()
+	{
+		var_y2 = var_y1 + (var_x2 - var_x1) / (var_x3 - var_x1) * (var_y3 - var_y1);
+	}
+}

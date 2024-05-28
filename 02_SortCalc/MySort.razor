@@ -1,0 +1,410 @@
+﻿@page "/mysort"
+@* @using BuildInfo.Properties; *@
+@using buildlib;
+<title>Сортамент металлопроката</title>
+<h3>Калькулятор металлопроката</h3>
+
+<div class="parent1">
+    <div class="div111">
+        <div class="grid">
+            <div class="radio_btn">
+                <input id="radio-1" type="radio" name="radio" value="shveller" @onchange="loadGOST" checked>
+                <label for="radio-1">Швеллер</label>
+            </div>
+            <div class="radio_btn">
+                <input id="radio-2" type="radio" name="radio" value="dvutavr" @onchange="loadGOST" checked>
+                <label for="radio-2">Двутавр</label>
+            </div>
+            <div class="radio_btn">
+                <input id="radio-3" type="radio" name="radio" value="angle" @onchange="loadGOST" checked>
+                <label for="radio-3">Уголок</label>
+            </div>
+            <div class="radio_btn">
+                <input id="radio-4" type="radio" name="radio" value="pipe" @onchange="loadGOST" checked>
+                <label for="radio-4">Труба круглая</label>
+            </div>
+            <div class="radio_btn">
+                <input id="radio-5" type="radio" name="radio" value="pipeKV" @onchange="loadGOST" checked>
+                <label for="radio-5">Труба квадратная</label>
+            </div>
+            <div class="radio_btn">
+                <input id="radio-6" type="radio" name="radio" value="pipePR" @onchange="loadGOST" checked>
+                <label for="radio-6">Труба прямоугольная</label>
+            </div>
+            <div class="radio_btn">
+                <input id="radio-7" type="radio" name="radio" value="arm" @onchange="loadGOST" checked>
+                <label for="radio-7">Арматура</label>
+            </div>
+            <div class="radio_btn">
+                <input id="radio-7" type="radio" name="radio" value="arm" @onchange="loadGOST" checked>
+                <label for="radio-7">Круг</label>
+            </div>
+            <div class="radio_btn">
+                <input id="radio-7" type="radio" name="radio" value="arm" @onchange="loadGOST" checked>
+                <label for="radio-7">Квадрат</label>
+            </div>
+        </div>
+     </div>
+        <div class="div211">
+                <img class="my_img" src="pics/dv.png" width="200px">
+        </div>
+ </div>
+
+<select class="cl_select01" @onchange="loadNumbers">
+    @foreach (var template1 in listProfGOST)
+    {
+        <option value=@template1>@template1</option>
+    }
+</select>
+
+<select class="cl_select02" @onchange="loadWeight">
+    @foreach (var template2 in listNumbers)
+    {
+        <option value=@template2>@template2</option>
+    }
+</select>
+
+<div class="profinfo">
+    <div class="profinfo2"><label>Масса пм</label></div>
+    <div class ="profinfo2"><label>@selectedWeight</label></div>
+    <div class="profinfo2"><label>Площадь сечения, см2</label> </div>
+    <div class="profinfo2"><label>@selectedWeight</label></div>
+    <div class="profinfo2"><label>Момент инерции Jx, мм4</label></div>
+    <div class="profinfo2"><label>@selectedWeight</label></div>
+    <div class="profinfo2"><label>Момент инерции Jy, мм4</label></div>
+    <div class="profinfo2"><label>@selectedWeight</label></div>
+    <div class="profinfo2"><label>Момент сопротивления Jx, мм4</label></div>
+    <div class="profinfo2"><label>@selectedWeight</label></div>
+    <div class="profinfo2"><label>Момент сопротивления Jy, мм4</label></div>
+    <div class="profinfo2"><label>@selectedWeight</label></div>
+    <div class="profinfo2"><input class="textbox2" placeholder="Введите длину профиля" @bind="Leight" /> </div>
+    <div class="profinfo2"><input class="textbox2" placeholder="Масса" @bind="WeightProf" /></div>
+    <div class="profinfo2"><button class="mainbottom" @onclick="calcWeightProf">Вычислить массу</button></div>
+    <div class="profinfo2"><button class="mainbottom" @onclick="AddToSpec">Добавить в спецификацию</button></div>
+</div>
+
+<button class="mainbottom" @onclick="DeleteLineSpec">Удалить из спецификации</button>
+<p>Спецификация</p>
+
+<ul>
+    @foreach (var todo in todos)
+    {   
+        <li>
+            <div class="listdiv">
+                <input type="checkbox" @bind="todo.IsDone">
+                @todo.Title
+            </div>
+        </li>
+       
+    }
+</ul>
+
+
+<style>
+    .listdiv{
+        border: 1px solid;
+        border-color: blue;
+        width: 50%;
+    }
+    .spectable {
+        display: grid;
+        grid-template-columns: 50px 300px 300px 75px 150px 150px 200px;
+        grid-template-rows: 40px ;
+        grid-column-gap: 5px;
+        grid-row-gap: 5px;
+        border: 1px solid;
+        border-color: blue;
+    }
+    .spectable2 {
+        border: 1px solid;
+        border-color: red;
+        border-radius: 5px;
+        display: flex;
+        justify-content: left; /* Горизонтальное выравнивание */
+        align-items: center; /* Вертикальное выравнивание */
+    }
+    .textbox2 {
+        border: 1px solid;
+        border-radius: 0.4em;
+        height: 30px;
+        justify-content: center;
+    }
+
+    .parent1 {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        grid-template-rows: 1fr;
+        grid-column-gap: 0px;
+        grid-row-gap: 0px;
+        /* border: 2px solid;
+        border-color: green; */
+        width: 100%;
+    }
+    .div111 {
+        grid-area: 1 / 1 / 2 / 2;
+       /*  border: 1px solid;
+        border-color: red; */
+    }
+    .div211 {
+        grid-area: 1 / 2 / 2 / 3;
+    }    
+    .my_img{
+        border-radius: 10px; /* Скругление углов изображения */
+        border: 5px solid #fff; /* Цвет и ширину рамки */
+        box-shadow: 2px 1px 5px #999999; /* Цвет и размер тени */
+    }
+
+    .cl_select02 {
+        margin-top: 10px;
+        width: 100px;
+        padding: 0.5em 1.5em;
+        background-color: #023e7dff;
+        color: #fff;
+        border-radius: 0.4em;
+        border: 1px solid;
+        border-color: black;
+        font-size: 0.9em;
+    }
+    .grid {
+        display: grid;
+        grid-template-columns: 250px 250px 250px;
+        grid-template-rows: 40px 40px 40px;
+        grid-column-gap: 5px;
+        grid-row-gap: 5px;
+    }
+    .profinfo {
+        display: grid;
+        grid-template-columns: 250px 250px;
+        grid-template-rows: 40px 40px 40px 40px 40px 40px 40px 40px 40px;
+        grid-column-gap: 5px;
+        grid-row-gap: 5px;
+        border: 1px solid;
+        border-color: red;
+    }
+
+    .profinfo2 {
+        border: 1px solid;
+        border-color: red;
+        border-radius: 5px;
+        display: flex;
+        justify-content: left; /* Горизонтальное выравнивание */
+        align-items: center; /* Вертикальное выравнивание */
+
+    }
+
+
+    input {
+        float: right;
+        margin-right: 10px;
+    }
+    .myinp {
+        width: 50px;
+    }
+    .radio_btn {
+        display: inline-block;
+        margin-top: 10px;
+        margin-right: 10px;
+    }
+        .radio_btn input[type=radio] {
+            display: none;
+        }
+        .radio_btn label {
+            display: inline-block;
+            cursor: pointer;
+            padding: 0px 15px;
+            line-height: 34px;
+            border: 1px solid black;
+            border-radius: 6px;
+            user-select: none;
+            width: 250px;
+        }
+        .radio_btn :hover{
+            background: #7d8597ff;
+        }
+
+        .radio_btn input[type=radio]:checked + label {
+            background: #5c677dff;
+        }
+        .radio_btn input[type=radio]:disabled + label {
+            background: #002855ff;
+            color: #666;
+        }
+
+</style>
+
+
+@code {
+    string? selectedTypeProf;
+    string? selectedNumber;
+    string? selectedGOST;
+    string? selectedWeight;
+    string? Leight;
+    double? WeightProf;
+    double? WeightTotal;
+    List<string> listProfGOST = new();
+    List<string> listNumbers = new();
+    List<string> listWeight = new();
+    List<string> listArea = new();
+    List<int> listNumbSpec = new();
+    List<int> listNumb = new();
+    private List<TodoItem> todos = new();
+
+    BuildProfile buildProfile = new BuildProfile();
+
+    public string[,]? arrProfNumbers;
+    public int indexNumb;
+
+    private string? newLine;
+
+    private void AddToSpec()
+    {
+        newLine = Convert.ToString(WeightProf);
+
+        if (!string.IsNullOrWhiteSpace(newLine))
+        {
+            todos.Add(new TodoItem { Title = newLine });
+            newLine = string.Empty;
+        }
+    }
+    private void DeleteLineSpec()
+    {
+        for (int i=0; i< todos.Count; i++)
+        {
+            if (todos[i].IsDone == true)
+            {
+                todos.Remove(todos[i]);
+            }
+        }
+    }
+
+
+    void calcWeightProf() => WeightProf = double.Parse(selectedWeight) * double.Parse(Leight);
+
+    void loadWeight(ChangeEventArgs e)
+    {
+        selectedNumber = e.Value.ToString();
+
+        for (int i = 0; i <= listNumbers.Count - 1; i++)
+        {
+            if (selectedNumber == listNumbers[i])
+            {
+                indexNumb = i;
+            }
+        }
+        selectedWeight = listWeight[indexNumb];
+    }
+
+    void loadGOST(ChangeEventArgs e) //ЗАГРУЗКА СПИСКА ГОСТОВ В ЗАВИСИМОСТИ ОТ ТИПА ПРОФИЛЯ
+    {
+        selectedTypeProf = e.Value.ToString();
+
+        listNumbers.Clear();
+
+        if (selectedTypeProf == "dvutavr")
+        {
+            listProfGOST.Clear();
+            listProfGOST.Add("ГОСТ 57837-2017 Тип Б");
+            listProfGOST.Add("ГОСТ 57837-2017 Тип Ш");
+            listProfGOST.Add("ГОСТ 57837-2017 Тип К");
+            listProfGOST.Add("ГОСТ 8239-89");
+            listProfGOST.Add("ГОСТ 19425 - 74");
+        }
+        if (selectedTypeProf == "shveller")
+        {
+            listProfGOST.Clear();
+            listProfGOST.Add("ГОСТ 8240-97 тип П");
+            listProfGOST.Add("ГОСТ 8240-97 тип У"); 
+            listProfGOST.Add("ГОСТ 8278 - 83 сталь С239-С245");
+            listProfGOST.Add("ГОСТ 8278 - 83 сталь С255-С275");
+        }
+        if (selectedTypeProf == "angle")
+        {
+            listProfGOST.Clear();
+            listProfGOST.Add("ГОСТ 8509-93");
+            listProfGOST.Add("ГОСТ 8510-86");
+        }
+        if (selectedTypeProf == "pipe")
+        {
+            listProfGOST.Clear();
+            listProfGOST.Add("ГОСТ 10704-91");
+            listProfGOST.Add("ГОСТ 8732-78");
+            listProfGOST.Add("ГОСТ 54157-2010");
+        }
+        if (selectedTypeProf == "pipeKV")
+        {
+            listProfGOST.Clear();
+            listProfGOST.Add("ТУ 36-2287-80");
+            listProfGOST.Add("ГОСТ Р 54157-2010");
+            listProfGOST.Add("ГОСТ 30245-94");
+        }
+        if (selectedTypeProf == "pipePR")
+        {
+            listProfGOST.Clear();
+            listProfGOST.Add("ТУ 36-2287-80");
+            listProfGOST.Add("ГОСТ Р 54157-2010");
+            listProfGOST.Add("ГОСТ 30245-94");
+        }
+        if (selectedTypeProf == "arm")
+        {
+            listProfGOST.Clear();
+            listProfGOST.Add("А240 по ГОСТ 34028-2016");
+            listProfGOST.Add("А400 по ГОСТ 34028-2016");
+            listProfGOST.Add("А500 по ГОСТ 34028-2016");
+            listProfGOST.Add("А600 по ГОСТ 34028-2016");
+        }
+    }
+
+    void loadNumbers(ChangeEventArgs e) //загрузка характеристик выбранного профиля
+    {
+        selectedGOST = e.Value.ToString();
+
+        listNumbers.Clear();
+
+        if (selectedGOST == "ГОСТ 57837-2017 Тип Б")
+        {
+            loadFromRes(buildProfile.Dv, 0, 9);
+        }
+        if (selectedGOST == "ГОСТ 57837-2017 Тип Ш")
+        {
+            loadFromRes(buildProfile.Dv_57837_SH, 0, 9);
+        }
+        if (selectedGOST == "ГОСТ 57837-2017 Тип К")
+        {
+            loadFromRes(buildProfile.Dv_57837_K, 0, 9);
+        }
+        if (selectedGOST == "ГОСТ 8239-89")
+        {
+            loadFromRes(buildProfile.Dv_8239, 0, 1);
+        }
+        if (selectedGOST == "ГОСТ 8240-97 тип П")
+        {
+            loadFromRes(buildProfile.Shv_P, 0, 1);
+        }
+
+        if (selectedGOST == "ГОСТ 8240-97 тип У")
+        {
+            loadFromRes(buildProfile.Shv_U, 0, 1);
+        }
+        if (selectedGOST == "ГОСТ 8509-93")
+        {
+            loadFromRes(buildProfile.Angle_R, 0, 16);
+        }
+        if (selectedGOST == "ГОСТ 8510-86")
+        {
+            loadFromRes(buildProfile.Angle_N, 0, 1);
+        }
+    }
+
+    void loadFromRes(object res, int num, int pm)
+    {
+        listNumbers.Clear();
+        listNumbers.Add("  ");
+        listNumbers = buildProfile.listFromFile((string)res, num);
+        listWeight.Add("   ");
+        listWeight = buildProfile.listFromFile((string)res, pm);
+        // listWeight.Add("   ");
+        // listArea = buildProfile.listFromFile((string)res, area);
+
+    }
+
+}

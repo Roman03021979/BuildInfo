@@ -1,0 +1,81 @@
+﻿@page "/beams"
+@* @using BlazorServ._04_Sortament *@
+<h3>Определение усилий в балках</h3>
+
+<div class="parent">
+
+    <div class="div1"> <label>Длина балки, L (м) </label></div>
+    <div class="div2"> <input @bind="var_L"> </div>
+
+    <div class="div3"> <label>Длина L1 (м)</label>  </div>
+    <div class="div4"> <input @bind="var_L1">  </div>
+
+    <div class="div5"> <label>Длина L2 (м)</label>  </div>
+    <div class="div6"> <input @bind="var_L2"> </div>
+
+    <div class="div7"> <label>Сила P (kH)</label>  </div>
+    <div class="div8"> <input @bind="var_P"> </div>
+
+    <div class="div9"> <button class="btn btn-main1" @onclick="CalcM">Вычислить M</button> </div>
+    <div class="div10"> <input @bind="var_M">  </div>
+
+    <div class="div11"> <img class="image-radius" src="pics/cons.png" width="400px">  </div>
+
+</div>
+
+
+<style>
+    .parent {
+        display: grid;
+        grid-template-columns: 150px 200px 200px repeat(4, 1fr);
+        grid-template-rows: repeat(5, 30px);
+        grid-column-gap: 5px;
+        grid-row-gap: 5px;
+        border: 1px solid black;
+    }
+    .div1 {grid-area: 1 / 1 / 2 / 2;
+    }
+    .div2 {grid-area: 1 / 2 / 2 / 3;
+    }
+    .div3 { grid-area: 2 / 1 / 3 / 2;
+    }
+    .div4 {grid-area: 2 / 2 / 3 / 3;
+    }
+    .div5 {grid-area: 3 / 1 / 4 / 2;
+    }
+    .div6 {grid-area: 3 / 2 / 4 / 3;
+    }
+    .div7 {grid-area: 4 / 1 / 5 / 2;
+    }
+    .div8 {grid-area: 4 / 2 / 5 / 3; 
+    }
+    .div9 {grid-area: 5 / 1 / 6 / 2;
+    }
+    .div10 {grid-area: 5 / 2 / 6 / 3;
+    }
+    .div11 {grid-area: 1 / 3 / 6 / 5;
+    }
+
+    .image-radius {
+        border-radius: 10px; /* Скругление углов изображения */
+        border: 5px solid #fff; /* Цвет и ширину рамки */
+        box-shadow: 2px 1px 5px #999999; /* Цвет и размер тени */
+    }
+
+</style>
+
+
+@code {
+
+    private double var_L = 0;
+    private double var_P= 0;
+    private double var_L1 = 0; 
+    private double var_L2 = 0;
+    private double var_M = 0;
+
+    private void CalcM()
+    {
+        var_M = var_L + var_L1 + var_L2 / var_P;
+    }
+
+}

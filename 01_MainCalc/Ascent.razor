@@ -1,0 +1,61 @@
+﻿@page "/ascent"
+<PageTitle>Расчет на всплытие</PageTitle>
+<h3>Расчет подземного резервуара на всплытие</h3>
+<p>Расчет выполняется по п. 9.31 СП 22.13330.2011 "ОСНОВАНИЯ ЗДАНИЙ И СООРУЖЕНИЙ"</p>
+<h4>Исходные данные</h4>
+<div class="profinfo">
+    <div class="profinfo2"><label>Расчетная высота напора воды, м</label></div>
+    <div class="profinfo2"><label>@X1</label></div>
+    <div class="profinfo2"><label>Площадь подземной части сооружения, м2</label> </div>
+    <div class="profinfo2"><label>@X1</label></div>
+    <div class="profinfo2"><label>Собственный вес конструкций сооружения, кН</label></div>
+    <div class="profinfo2"><label>@X1</label></div>
+    <div class="profinfo2"><label>Вес грунта обратной засыпки над обрезами фундаментов и над подземной частью сооружения</label></div>
+    <div class="profinfo2"><label>@X1</label></div>
+    <div class="profinfo2"><label>Сумма нормативных значений удерживающих вертикальных составляющих сил сопротивления всплытию</label></div>
+    <div class="profinfo2"><label>@X1</label></div>
+    <div class="profinfo2"><label>Момент сопротивления Jy, мм4</label></div>
+    <div class="profinfo2"><label>@X1</label></div>
+    <div class="profinfo2"><input class="textbox2" placeholder="Введите длину профиля" @bind="X1" /> </div>
+    <div class="profinfo2"><input class="textbox2" placeholder="Масса" @bind="X1" /></div>
+    <div class="profinfo2"><button class="mainbottom" @onclick="calcY1">Вычислить</button></div>
+</div>
+<p></p>
+<p>Если условие формулы (9.18) не удовлетворяется, то, чтобы не допустить разрушение от всплытия сооружения, необходимо применять следующие мероприятия:</p>
+<p>- увеличение собственного веса сооружения или его пригрузка;</p>
+<p>- уменьшение поровых давлений под сооружением с помощью устройства дренажа;</p>
+<p>- закрепление сооружения в нижележащих слоях грунта с помощью анкеров или свай</p>
+
+
+<style>
+    
+    .profinfo {
+        display: grid;
+        grid-template-columns: 500px 250px;
+        grid-template-rows: 40px 40px 40px 40px 40px 40px 40px 40px 40px;
+        grid-column-gap: 5px;
+        grid-row-gap: 5px;
+        border: 1px solid;
+        border-color: black;
+    }
+
+    .profinfo2 {
+        border: 1px solid;
+        border-color: black;
+        border-radius: 5px;
+        display: flex;
+        justify-content: left; /* Горизонтальное выравнивание */
+        align-items: center; /* Вертикальное выравнивание */
+    }
+</style>
+
+
+@code {
+    private int X1=1;
+
+    private void calcY1()
+    {
+        
+    }
+
+}

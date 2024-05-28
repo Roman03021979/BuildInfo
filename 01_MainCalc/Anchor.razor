@@ -1,0 +1,53 @@
+﻿@page "/anchor"
+<PageTitle>Анкерные болты</PageTitle>
+<h3>Расчет анкерных болтов</h3>
+
+<div class="profinfo">
+    <div class="profinfo2"><label>Масса пм</label></div>
+    <div class="profinfo2"><label>@X1</label></div>
+    <div class="profinfo2"><label>Площадь сечения, см2</label> </div>
+    <div class="profinfo2"><label>@X1</label></div>
+    <div class="profinfo2"><label>Момент инерции Jx, мм4</label></div>
+    <div class="profinfo2"><label>@X1</label></div>
+    <div class="profinfo2"><label>Момент инерции Jy, мм4</label></div>
+    <div class="profinfo2"><label>@X1</label></div>
+    <div class="profinfo2"><label>Момент сопротивления Jx, мм4</label></div>
+    <div class="profinfo2"><label>@X1</label></div>
+    <div class="profinfo2"><label>Момент сопротивления Jy, мм4</label></div>
+    <div class="profinfo2"><label>@X1</label></div>
+    <div class="profinfo2"><input class="textbox2" placeholder="Введите длину профиля" @bind="X1" /> </div>
+    <div class="profinfo2"><input class="textbox2" placeholder="Масса" @bind="X1" /></div>
+    <div class="profinfo2"><button class="mainbottom" @onclick="calcY1">Вычислить</button></div>
+</div>
+
+<style>
+    .profinfo {
+        display: grid;
+        grid-template-columns: 250px 250px;
+        grid-template-rows: 40px 40px 40px 40px 40px 40px 40px 40px 40px;
+        grid-column-gap: 5px;
+        grid-row-gap: 5px;
+        border: 1px solid;
+        border-color: black;
+    }
+
+    .profinfo2 {
+        border: 1px solid;
+        border-color: black;
+        border-radius: 5px;
+        display: flex;
+        justify-content: left; /* Горизонтальное выравнивание */
+        align-items: center; /* Вертикальное выравнивание */
+    }
+</style>
+
+
+@code {
+    private int X1=1;
+
+    private void calcY1()
+    {
+        
+    }
+
+}

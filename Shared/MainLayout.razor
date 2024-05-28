@@ -1,0 +1,29 @@
+﻿@inherits LayoutComponentBase
+
+@* ШАБЛОН ТИПОВОЙ СТРАНИЦЫ *@
+
+<PageTitle>BuildInfo</PageTitle>
+
+<div class="page">
+    <div class="sidebar">
+        <NavMenu />
+    </div>
+    <main class="mainblock">
+
+        <div class="top-row px-4">
+            <a href="https://docs.microsoft.com/aspnet/" target="_blank">Контакты</a>
+        </div>
+
+        <article class="content px-4">
+            @Body
+        </article>
+    </main>
+</div>
+
+<style>
+    .mainblock{
+        width: auto;
+        border: 2px solid;
+        border-color:black;
+    }
+</style>
